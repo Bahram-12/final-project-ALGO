@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-
+#_______________GROUP PROJECT_____BAHRAM-HASSANZADA-100817345_____JACOB-KORIN-100860365_____Fahad-Shafiq-100831055_____ Munim-Melaque-100847597__________________
 # In[1]:
 
 
@@ -9,14 +9,14 @@ import csv
 
 #define a list named edges.
 edges = [
-    ('A', 'B', 6), ('A', 'F', 8), ('B', 'C', 5), ('B', 'G', 9), ('C', 'D', 7),
-    ('C', 'H', 12), ('D', 'E', 5), ('D', 'I', 15), ('E', 'J', 9), ('F', 'G', 7),
-    ('F', 'K', 8), ('G', 'H', 9), ('G', 'L', 13), ('H', 'I', 7), ('H', 'M', 8),
-    ('I', 'J', 5), ('I', 'N', 9), ('J', 'O', 8), ('K', 'L', 5), ('L', 'M', 7),
-    ('M', 'N', 8), ('N', 'O', 11), ('O', 'P', 8), ('P', 'Q', 8), ('P', 'U', 9),
-    ('Q', 'R', 5), ('R', 'S', 8), ('R', 'V', 12), ('S', 'T', 9), ('T', 'U', 7),
-    ('U', 'V', 5), ('V', 'W', 8)
+  ('A', 'B', 6), ('A', 'F', 5), ('B', 'C', 5), ('B', 'G', 6), ('C', 'D', 7), ('C', 'H', 5),
+  ('D', 'E', 7), ('D', 'I', 8), ('E', 'I', 6), ('E', 'N', 15), ('F', 'G', 8), ('F', 'J', 7),
+  ('G', 'H', 9), ('G', 'K', 8), ('H', 'I', 12),('I', 'M', 10), ('J', 'K', 5), ('J', 'O', 7),
+  ('K', 'L', 7), ('L', 'M', 7), ('L', 'P', 7), ('M', 'N', 9), ('N', 'R', 7), ('O', 'P', 13), 
+    ('O', 'S', 9), ('P', 'Q', 8), ('P', 'U', 11), ('Q', 'R', 9), ('R', 'W', 10), ('S', 'T', 9), 
+    ('T', 'U', 8), ('U', 'V', 8), ('V', 'W', 5)
 ]
+
 
 # save this information in a file format
 with open('graph_data.csv', 'w', newline='') as file:
@@ -64,6 +64,9 @@ graph = load_graph_from_csv('graph_data.csv')
 print(graph)
 
 
+
+
+
 # In[3]:
 
 
@@ -74,8 +77,11 @@ import heapq
 def dijkstra(graph, start):
     # Initialize a dictionary
     distances = {node: float('infinity') for node in graph}
+        # Initialize paths dictionary, where each node's path starts as an empty list
+    paths = {node: [] for node in graph}
     # Set the distance to 0
     distances[start] = 0
+    paths[start] = [start]
     # Initialize a priority queue
     priority_queue = [(0, start)]
     
@@ -88,32 +94,42 @@ def dijkstra(graph, start):
             distance = current_distance + weight
             if distance < distances[neighbor]:
                 distances[neighbor] = distance
+                paths[neighbor] = paths[current_node] + [neighbor]
                 heapq.heappush(priority_queue, (distance, neighbor))
     # Return the dictionary
-    return distances
+    return distances, paths
 
 # Specify the starting node
 start_node = 'A'
 shortest_paths = dijkstra(graph, start_node)
+distances, paths = dijkstra(graph, start_node)
 print(shortest_paths)
+
+# Example: Print the shortest path and distance to node 'B'
+print(f"Shortest path to B: {paths['B']}, Distance: {distances['B']}")
 
 
 # In[4]:
 
 
-# Charging stations are at nodes 'H', 'K', 'Q', 'T'
-charging_stations = ['H', 'K', 'Q', 'T']
+start_node = 'A'
 
 # Function to find the shortest path to each charging station
 def find_routes_to_stations(paths, stations):
     routes = {}
     for station in stations:
-        routes[station] = paths[station]
+        routes[station] = paths.get(station, [])
     return routes
 
+# Specify the charging stations
+charging_stations = ['H', 'K', 'Q', 'T']
+
 # Get the routes to the charging stations
-routes_to_stations = find_routes_to_stations(shortest_paths, charging_stations)
-print(routes_to_stations)
+routes_to_stations = find_routes_to_stations(paths, charging_stations)
+
+# Print the shortest paths to the charging stations
+for station, route in routes_to_stations.items():
+    print(f"Shortest path to {station}: {route} with distance: {distances.get(station, 'Unknown')}")
 
 
 # In[ ]:
