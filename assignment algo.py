@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
-#_______________GROUP PROJECT_____BAHRAM-HASSANZADA-100817345_____JACOB-KORIN-100860365_____Fahad-Shafiq-100831055_____ Munim-Melaque-100847597__________________
+#_______________GROUP PROJECT_____BAHRAM-HASSANZADA-100817345_____JACOB-KORIN-100860365_____
+#___________________________________Fahad-Shafiq-100831055______ Munim-Melaque-100847597____
 # In[1]:
 
 
